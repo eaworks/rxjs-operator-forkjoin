@@ -28,10 +28,26 @@ const randomFood$ = ajax('https://random-data-api.com/api/food/random_food');
 // randomFood$.subscribe((ajaxResponse) =>
 //   console.log(ajaxResponse.response['dish'])
 // );
-forkJoin([randomName$, randomNation$, randomFood$]).subscribe(
-  ([randomName$, randomNation$, randomFood$]) =>
-    console.log(
-      `${randomNation$.response['capital']} da yasayan ${randomName$.response['first_name']} ${randomFood$.response['dish']} yemeyi cok sever
-    `
-    )
-);
+// forkJoin([randomName$, randomNation$, randomFood$]).subscribe(
+//   ([randomName$, randomNation$, randomFood$]) =>
+//     console.log(
+//       `${randomNation$.response['capital']} da yasayan ${randomName$.response['first_name']} ${randomFood$.response['dish']} yemeyi cok sever
+//     `
+//     )
+// );
+// Ornek
+const can$ = new Observable((subscriber) => {
+  setTimeout(() => {
+    subscriber.next('Can');
+    subscriber.complete();
+  }, 3000);
+});
+const canan$ = new Observable((subscriber) => {
+  setTimeout(() => {
+    subscriber.error('Failure!');
+  }, 5000);
+});
+forkJoin([can$, canan$]).subscribe({
+  next: (value) => console.log(value),
+  error: (err) => console.log('Error', err),
+});
